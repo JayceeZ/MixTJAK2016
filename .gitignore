@@ -1,1 +1,5 @@
-/server/node_modules
+# Downloaded module folder
+**/node_modules/
+
+# IDEA files
+**/.idea/
