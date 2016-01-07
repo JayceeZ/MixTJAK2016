@@ -9,7 +9,7 @@
                 soundSource,
                 soundBuffer,
                 buttonPlay, buttonStop, buttonLoad,
-                url = 'http://localhost:8080/static/test.mp3';
+                url = 'http://localhost:8000/test.mp3';
 
         // Step 1 - Initialise the Audio Context
         // There can be only one!
@@ -19,13 +19,12 @@
             } else if (typeof webkitAudioContext == "function") {
                 context = new webkitAudioContext();
             } else {
-                throw new Error('AudioContext not supported. :(');
+                throw new Error('AudioContext not supported.');
             }
 
             buttonPlay = document.querySelector("#play");
             buttonStop = document.querySelector("#stop");
             buttonLoad = document.querySelector("#load");
-
         }
 
         // Step 2: Load our Sound using XHR
