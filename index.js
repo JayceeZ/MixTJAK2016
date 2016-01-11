@@ -1,7 +1,6 @@
 var logger = require('morgan'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
-    socketio = require('socket.io'),
     path = require("path"),
     _ = require('lodash');
 
