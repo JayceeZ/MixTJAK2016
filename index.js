@@ -21,5 +21,6 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+
 // LAUNCH SERVER
 app.listen(8000);
