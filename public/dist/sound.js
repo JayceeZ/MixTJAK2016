@@ -1,6 +1,7 @@
 function Sound(args) {
   this.buffer = null;
   this.filename = null;
+  this.percentComplete = 0;
 
   /*************
    * PROTOTYPE *
@@ -35,13 +36,10 @@ function Sound(args) {
   /**
    *
    */
-  this.__onBufferProgress = function(progress) {
-    // Update view for loading progress
-    var percentComplete;
-
-    if (e.lengthComputable) {
-      percentComplete = e.loaded / e.total * 100;
-      this.drawer.updateLoader(percentComplete);
+  this.__onBufferProgress = function(evt) {
+    // Update loading progress
+    if (evt.lengthComputable) {
+      this.percentComplete = evt.loaded / evt.total * 100;
     }
   };
 
