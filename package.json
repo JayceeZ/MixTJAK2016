@@ -17,6 +17,7 @@
     "lodash": "^3.10.1",
     "mocha": "^2.3.4",
     "mongoose": "^4.3.6",
+    "mongoose-relationship": "^0.1.5",
     "morgan": "^1.6.1",
     "path": "^0.12.7"
   }

@@ -52,7 +52,7 @@ function Sound(args) {
 
   this.getName = function() {
     return this.filename;
-  }
+  };
 
   /**
    * Setup
