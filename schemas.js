@@ -1,6 +1,8 @@
 var mongoose = require('mongoose'),
     relationship = require('mongoose-relationship');
 
+//https://www.npmjs.com/package/mongoose-relationship
+
 var projectSchema = new mongoose.Schema({
   name: String,
   sounds: [{ type: mongoose.Schema.ObjectId, ref: 'Sound' }]

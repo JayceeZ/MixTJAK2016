@@ -5,7 +5,6 @@ var logger = require('morgan'),
     mongoose = require('mongoose'),
     _ = require('lodash'),
     schemas = require('./schemas.js');
-//https://www.npmjs.com/package/mongoose-relationship
 
 var databaseUrl = "mongodb://127.0.0.1:27017/";
 var database = "mixtjak2016_development";
