@@ -2,7 +2,17 @@ var logger = require('morgan'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     path = require("path"),
-    _ = require('lodash');
+    mongoose = require('mongoose'),
+    _ = require('lodash'),
+
+    schemas = require('./schemas.js');
+
+var databaseUrl = "mongodb://127.0.0.1:27017/";
+var database = "mixtjak2016_development";
+mongoose.connect(databaseUrl+database);
+
+var Project = mongoose.model('Project', schemas.project);
+var Music = mongoose.model('Music', schemas.music);
 
 /* Express server */
 var express = require('express');
@@ -18,8 +28,36 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(express.static(path.join(__dirname, '../public')));
 
+app.post('/project', function(req, res) {
+  if(!req.accepts('application/json'))
+    return;
+  var askedName = req.body.name;
+
+  Project.findOne({ name: askedName }, function(err, result) {
+    if(result)
+      res.status(200).json(result);
+    else
+      res.status(404);
+  });
+});
+
+app.post('/project/new', function (req, res) {
+  if(!req.accepts('application/json'))
+    return;
+  var reqJson = req.body;
+
+  var name = reqJson.name;
+
+  var project = new Project({name: name});
+  project.save(function (err) {
+    if (err)
+      res.status(500).json({ message: 'Request is malformed' });
+    else
+      res.status(200).json({ message: 'Project have been created', project: project });
+  }, this);
+});
 
 // LAUNCH SERVER
 app.listen(8000);
