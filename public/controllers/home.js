@@ -11,11 +11,18 @@ appMixTJAKApp.controller('HomeCtrl', ['$scope', function($scope) {
   function finished() {
     $scope.progress = "All loaded";
 
-    playlist.playFrom(0);
   }
   function progress(p) {
     $scope.progress = p;
   }
+
+  $scope.onClickPlay = function() {
+    playlist.playFrom(0);
+  };
+
+  $scope.onClickStop = function() {
+    playlist.stopAllTracks();
+  };
 
   $scope.$watch( 'progress',
     function(newValue, oldValue){

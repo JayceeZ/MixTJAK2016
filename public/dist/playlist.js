@@ -12,6 +12,7 @@ var Playlist = function(canvasPlaying, canvasSounds) {
   this.totalTime = 0;
   this.elapsedTimeSinceStart = 0;
   this.lastTime = 0;
+  this.currentTime = 0;
 
   this.waveformDrawer = new WaveformDrawer(this.context);
 
@@ -47,6 +48,15 @@ var Playlist = function(canvasPlaying, canvasSounds) {
 
     this.__buildGraph();
     callback.call(scope);
+  };
+
+  this.stopAllTracks = function() {
+    this.sounds.forEach(function(s) {
+      // destroy the nodes
+      s.stop(0);
+    });
+    this.elapsedTimeSinceStart = 0;
+    this.paused = true;
   };
 
   this.playFrom = function(startTime) {

@@ -6,6 +6,7 @@ function Sound(args) {
   this.filename = null;
   this.progress = 0;
   this.context = args.context;
+  this.masterVolumeNode = null;
 
   /*************
    * PROTOTYPE *
@@ -82,6 +83,8 @@ function Sound(args) {
   };
 
   this.generateBufferSource = function(masterVolumeNode) {
+    this.masterVolumeNode = masterVolumeNode;
+
     this.bufferSource = this.context.createBufferSource();
     this.bufferSource.buffer = this.buffer;
     this.volumeNode = this.context.createGain();
@@ -91,7 +94,13 @@ function Sound(args) {
   };
 
   this.start = function(delay, startTime) {
-    this.bufferSource.start(delay, startTime)
+    this.bufferSource.start(delay, startTime);
+  };
+
+  this.stop = function(delay) {
+    this.bufferSource.stop(delay);
+    // regenerate for further playing
+    this.generateBufferSource(this.masterVolumeNode);
   };
 
   this.getName = function() {
