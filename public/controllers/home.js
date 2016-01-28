@@ -9,11 +9,13 @@ appMixTJAKApp.controller('HomeCtrl', ['$scope', function($scope) {
   playlist.loadAllSoundSamples(finished, progress, this);
 
   function finished() {
-    $scope.progress = "All loaded";
-
+    $scope.progress = "All songs have been loaded";
   }
+
   function progress(p) {
-    $scope.progress = p;
+    $scope.$apply(function() {
+      $scope.progress = p;
+    });
   }
 
   $scope.onClickPlay = function() {
@@ -23,12 +25,4 @@ appMixTJAKApp.controller('HomeCtrl', ['$scope', function($scope) {
   $scope.onClickStop = function() {
     playlist.stopAllTracks();
   };
-
-  $scope.$watch( 'progress',
-    function(newValue, oldValue){
-      console.log('progress Changed');
-      console.log(newValue);
-      console.log(oldValue);
-    }
-  );
 }]);
