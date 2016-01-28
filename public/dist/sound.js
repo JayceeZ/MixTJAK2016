@@ -1,7 +1,8 @@
 function Sound(args) {
   this.buffer = null;
   this.filename = null;
-  this.percentComplete = 0;
+  this.progress = 0;
+  this.context = args.context;
 
   /*************
    * PROTOTYPE *
@@ -39,19 +40,51 @@ function Sound(args) {
   this.__onBufferProgress = function(evt) {
     // Update loading progress
     if (evt.lengthComputable) {
-      this.percentComplete = evt.loaded / evt.total * 100;
+      this.progress = evt.loaded / evt.total * 100;
+    }
+    if(args.onprogress && !args.onprogress.fn)
+      args.onprogress(this.progress);
+    else if (args.onprogress.fn && args.onprogress.scope) {
+      args.onprogress.fn.call(args.onprogress.scope, this.progress);
     }
   };
 
   /**
-   * When file stream have been fully (or partially ?) loaded
+   * When file stream have been fully loaded
    */
-  this.onTrackLoaded = function(trackBuffer) {
+  this.onTrackLoaded = function(request) {
     // Buffer is fully loaded
+
+    var _this = this;
+    this.context.decodeAudioData(
+      request.target.response,
+      function(buffer) {
+        if (!buffer) {
+          alert('error decoding file data: ' + url);
+          return;
+        }
+        _this.buffer = buffer;
+
+        // callback
+        if(args.onload && !args.onload.fn)
+          args.onload(_this.progress);
+        else if (args.onload.fn && args.onload.scope) {
+          args.onload.fn.call(args.onload.scope, _this.buffer);
+        }
+      },
+      function(error) {
+        console.error('decodeAudioData error', error);
+      }
+    );
+
   };
 
   this.getName = function() {
     return this.filename;
+  };
+
+  this.getBuffer = function() {
+    return this.buffer;
   };
 
   /**
