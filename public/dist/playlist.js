@@ -84,6 +84,7 @@ var Playlist = function(canvasPlaying, canvasSounds) {
     this.sounds.forEach(function(sound) {
       // each sound sample is the  source of a graph
       sound.generateBufferSource(_this.masterVolumeNode);
+      _this.totalTime += sound.bufferSource.buffer.duration;
     });
     // Connect the master volume to the speakers
     this.masterVolumeNode.connect(this.context.destination);
@@ -103,9 +104,7 @@ var Playlist = function(canvasPlaying, canvasSounds) {
       ctx.fillText(this.elapsedTimeSinceStart.toPrecision(4), 100, 20);
 
       // at least one track has been loaded
-      if (this.decodedAudioBuffer != undefined) {
-
-        this.totalTime = this.decodedAudioBuffer.duration;
+      if (this.sounds.length) {
         var x = this.elapsedTimeSinceStart * canvas.width / this.totalTime;
 
         ctx.strokeStyle = "white";
