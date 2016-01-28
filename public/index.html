@@ -17,6 +17,9 @@
     <title>MixTJAK2016App</title>
     <meta name="description" content="">
     <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="js/jquery-1.12.0.min.js"></script>
+    <script src="js/angular.min.js"></script>
+    <script src="js/angular-route.min.js"></script>
   </head>
   <body>
 
@@ -25,14 +28,10 @@
       your browser</a> to improve your experience.</p>
     <![endif]-->
 
-    <div ng-controller="HomepageController">
-      {{ sound }}
-    </div>
-
+    <div ng-view></div>
 
   </body>
-  <script src="js/angular.min.js"></script>
   <script src="app.js"></script>
   <script src="dist/sound.js"></script>
-  <script src="homepage/Controller.js"></script>
+  <script src="controllers/home.js"></script>
 </html>
