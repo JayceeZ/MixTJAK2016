@@ -26,7 +26,7 @@
     <script src="js/waveformDrawer.js"></script>
 
     <script src="js/platform.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/polymer/1.2.4/polymer.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/polymer/0.5.6/polymer.js"></script>
     <link rel="import" href="webcomponents/polymer.html">
     <link rel="import" href="webcomponents/controls.html">
 
