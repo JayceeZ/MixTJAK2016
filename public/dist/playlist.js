@@ -1,14 +1,16 @@
 
 var Playlist = function(canvas) {
-  this.totalTime = 0;
-  this.elapsedTimeSinceStart = 0;
-  this.lastTime = 0;
-
   this.sounds = [];
 
   // Audio context
   var audioContext = window.AudioContext || window.webkitAudioContext;
   this.context = new audioContext();
+
+  // Global playing params and elements
+  this.masterVolumeNode = null;
+  this.totalTime = 0;
+  this.elapsedTimeSinceStart = 0;
+  this.lastTime = 0;
 
   this.waveformDrawer = new WaveformDrawer(this.context);
   this.canvas = canvas;
@@ -39,11 +41,13 @@ var Playlist = function(canvas) {
     console.log("Finished loading");
 
     this.__drawTrack(this.sounds[0].buffer);
+
+    this.__buildGraph();
     callback.call();
   };
 
   this.playFrom = function(startTime) {
-    samples.forEach(function(s) {
+    this.sounds.forEach(function(s) {
       // First parameter is the delay before playing the sample
       // second one is the offset in the song, in seconds, can be 2.3456
       // very high precision !
@@ -53,30 +57,23 @@ var Playlist = function(canvas) {
     // Note : we memorise the current time, context.currentTime always
     // goes forward, it's a high precision timer
     console.log("start all tracks startTime =" + startTime);
-    lastTime = context.currentTime;
+    this.lastTime = context.currentTime;
     this.paused = false;
   };
 
-  this.buildGraph = function buildGraph(bufferList) {
-    var sources = [];
+  this.__buildGraph = function() {
     // Create a single gain node for master volume
-    masterVolumeNode = this.context.createGain();
-    console.log("in build graph, bufferList.size = " + bufferList.length);
-    bufferList.forEach(function(sample, i) {
+    this.masterVolumeNode = this.context.createGain();
+
+    console.log("Number of songs = " + this.sounds.length);
+
+    var _this = this;
+    this.sounds.forEach(function(sound) {
       // each sound sample is the  source of a graph
-      sources[i] = context.createBufferSource();
-      sources[i].buffer = sample;
-      // connect each sound sample to a vomume node
-      trackVolumeNodes[i] = context.createGain();
-      // Connect the sound sample to its volume node
-      sources[i].connect(trackVolumeNodes[i]);
-      // Connects all track volume nodes a single master volume node
-      trackVolumeNodes[i].connect(masterVolumeNode);
-      // Connect the master volume to the speakers
-      masterVolumeNode.connect(context.destination);
-      // On active les boutons start et stop
-      samples = sources;
-    })
+      sound.generateBufferSource(_this.masterVolumeNode);
+    });
+    // Connect the master volume to the speakers
+    this.masterVolumeNode.connect(this.context.destination);
   };
 
   this.animateTime = function() {

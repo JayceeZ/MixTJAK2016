@@ -1,5 +1,8 @@
 function Sound(args) {
+  // Two buffers (the decoded buffer and the playing buffer ("BufferSource")
   this.buffer = null;
+  this.bufferSource = null;
+
   this.filename = null;
   this.progress = 0;
   this.context = args.context;
@@ -76,7 +79,19 @@ function Sound(args) {
         console.error('decodeAudioData error', error);
       }
     );
+  };
 
+  this.generateBufferSource = function(masterVolumeNode) {
+    this.bufferSource = this.context.createBufferSource();
+    this.bufferSource.buffer = this.buffer;
+    this.volumeNode = this.context.createGain();
+    this.bufferSource.connect(this.volumeNode);
+
+    this.bufferSource.connect(masterVolumeNode);
+  };
+
+  this.start = function(delay, startTime) {
+    this.bufferSource.start(delay, startTime)
   };
 
   this.getName = function() {
