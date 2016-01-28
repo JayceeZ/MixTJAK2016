@@ -1,5 +1,5 @@
 
-var Playlist = function(canvas) {
+var Playlist = function(canvasPlaying, canvasSounds) {
   this.sounds = [];
 
   // Audio context
@@ -14,13 +14,12 @@ var Playlist = function(canvas) {
   this.lastTime = 0;
 
   this.waveformDrawer = new WaveformDrawer(this.context);
-  this.canvas = canvas;
 
   this.__drawTrack = function drawTrack(decodedBuffer) {
-    this.waveformDrawer.init(decodedBuffer, canvas, 'green');
+    this.waveformDrawer.init(decodedBuffer, canvasSounds, 'green');
     // First parameter = Y position (top left corner)
     // second = height of the sample drawing
-    this.waveformDrawer.drawWave(0, canvas.height);
+    this.waveformDrawer.drawWave(0, canvasSounds.height);
   };
 
   this.loadAllSoundSamples = function(finishedCallback, progressCallback, scope) {
@@ -86,18 +85,18 @@ var Playlist = function(canvas) {
       this.currentTime = this.context.currentTime;
       var delta = this.currentTime - this.lastTime;
 
-      var canvas = this.canvas, ctx = canvas.getContext('2d');
+      var canvas = canvasPlaying, ctx = canvas.getContext('2d');
 
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'white';
       ctx.font = '14pt Arial';
-      ctx.fillText(elapsedTimeSinceStart.toPrecision(4), 100, 20);
+      ctx.fillText(this.elapsedTimeSinceStart.toPrecision(4), 100, 20);
 
       // at least one track has been loaded
       if (this.decodedAudioBuffer != undefined) {
 
         this.totalTime = this.decodedAudioBuffer.duration;
-        var x = elapsedTimeSinceStart * canvas.width / this.totalTime;
+        var x = this.elapsedTimeSinceStart * canvas.width / this.totalTime;
 
         ctx.strokeStyle = "white";
         ctx.lineWidth = 3;
@@ -107,7 +106,7 @@ var Playlist = function(canvas) {
         ctx.stroke();
 
         this.elapsedTimeSinceStart += delta;
-        this.lastTime = currentTime;
+        this.lastTime = this.currentTime;
       }
     }
     var _this = this;
