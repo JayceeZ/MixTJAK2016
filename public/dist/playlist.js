@@ -5,6 +5,7 @@ var Playlist = function(canvas) {
   // Audio context
   var audioContext = window.AudioContext || window.webkitAudioContext;
   this.context = new audioContext();
+  this.paused = true;
 
   // Global playing params and elements
   this.masterVolumeNode = null;
@@ -22,28 +23,31 @@ var Playlist = function(canvas) {
     this.waveformDrawer.drawWave(0, canvas.height);
   };
 
-  this.loadAllSoundSamples = function(callback) {
+  this.loadAllSoundSamples = function(finishedCallback, progressCallback, scope) {
     // Instantiates sounds for loading the buffers
     var testSound = new Sound({ filepath: '/sounds/test.mp3', onload: {fn: soundLoaded, scope: this}, context: this.context});
+    var testSoundCopy = new Sound({ filepath: '/sounds/test.mp3', onload: {fn: soundLoaded, scope: this}, context: this.context});
 
     this.sounds.push(testSound);
+    this.sounds.push(testSoundCopy);
 
     var _this = this, loadProgress = 0;
     function soundLoaded() {
       loadProgress++;
+      progressCallback.call(scope, loadProgress);
       if(_this.sounds.length == loadProgress) {
-        _this.finishedLoading(callback);
+        _this.finishedLoading(scope, finishedCallback);
       }
     }
   };
 
-  this.finishedLoading = function() {
+  this.finishedLoading = function(scope, callback) {
     console.log("Finished loading");
 
     this.__drawTrack(this.sounds[0].buffer);
 
     this.__buildGraph();
-    callback.call();
+    callback.call(scope);
   };
 
   this.playFrom = function(startTime) {
@@ -57,7 +61,7 @@ var Playlist = function(canvas) {
     // Note : we memorise the current time, context.currentTime always
     // goes forward, it's a high precision timer
     console.log("start all tracks startTime =" + startTime);
-    this.lastTime = context.currentTime;
+    this.lastTime = this.context.currentTime;
     this.paused = false;
   };
 
@@ -106,8 +110,11 @@ var Playlist = function(canvas) {
         this.lastTime = currentTime;
       }
     }
-    requestAnimationFrame(this.animateTime);
+    var _this = this;
+    requestAnimationFrame(function() {
+      _this.animateTime();
+    });
   };
 
-  requestAnimationFrame(this.animateTime);
+  this.animateTime();
 };

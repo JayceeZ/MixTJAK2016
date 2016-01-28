@@ -47,7 +47,7 @@ function Sound(args) {
     }
     if(args.onprogress && !args.onprogress.fn)
       args.onprogress(this.progress);
-    else if (args.onprogress.fn && args.onprogress.scope) {
+    else if (args.onprogress && args.onprogress.fn && args.onprogress.scope) {
       args.onprogress.fn.call(args.onprogress.scope, this.progress);
     }
   };
@@ -71,7 +71,7 @@ function Sound(args) {
         // callback
         if(args.onload && !args.onload.fn)
           args.onload(_this.progress);
-        else if (args.onload.fn && args.onload.scope) {
+        else if (args.onload && args.onload.fn && args.onload.scope) {
           args.onload.fn.call(args.onload.scope, _this.buffer);
         }
       },
