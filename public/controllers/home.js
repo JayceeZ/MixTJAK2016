@@ -1,5 +1,9 @@
 
-appMixTJAKApp.controller('HomeCtrl', ['$scope', function($scope) {
+appMixTJAKApp.controller('HomeCtrl', ['$scope', '$location', function($scope, $location) {
+  if(!$scope.user || $scope.user.auth === false) {
+    $location.path('/login');
+  }
+
   $scope.progress = 0;
 
   var canvasSounds = angular.element('#sounds')[0];

@@ -27,16 +27,19 @@
     <link rel="stylesheet" type="text/css" href="css/global-app.css">
   </head>
   <body>
+    <div class="container">
+      <h1 class="app-title">MIX TJAK 2016</h1>
+      <div ng-view></div>
+    </div>
 
     <!--[if lt IE 7]>
     <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade
       your browser</a> to improve your experience.</p>
     <![endif]-->
-
-    <div class="container" ng-view></div>
   </body>
   <script src="app.js"></script>
   <script src="dist/sound.js"></script>
   <script src="dist/playlist.js"></script>
   <script src="controllers/home.js"></script>
+  <script src="controllers/login.js"></script>
 </html>
