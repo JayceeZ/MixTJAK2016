@@ -26,3 +26,13 @@ appMixTJAKApp.controller('HomeCtrl', ['$scope', function($scope) {
     playlist.stopAllTracks();
   };
 }]);
+
+appMixTJAKApp.directive("resize", function(){
+  return {
+    restrict: "A",
+    link: function(scope, element) {
+      element[0].width = parseInt(element[0].clientWidth);
+      element[0].height = parseInt(element[0].clientHeight);
+    }
+  };
+});

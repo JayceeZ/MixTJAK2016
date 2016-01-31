@@ -1,6 +1,7 @@
 
 var Playlist = function(canvasPlaying, canvasSounds) {
   this.sounds = [];
+  this.maxSounds = 8;
 
   // Audio context
   var audioContext = window.AudioContext || window.webkitAudioContext;
@@ -16,20 +17,17 @@ var Playlist = function(canvasPlaying, canvasSounds) {
 
   this.waveformDrawer = new WaveformDrawer(this.context);
 
-  this.__drawTrack = function drawTrack(decodedBuffer) {
+  this.__drawTrack = function drawTrack(decodedBuffer, i) {
     this.waveformDrawer.init(decodedBuffer, canvasSounds, 'green');
     // First parameter = Y position (top left corner)
     // second = height of the sample drawing
-    this.waveformDrawer.drawWave(0, canvasSounds.height);
+    this.waveformDrawer.drawWave(i*canvasSounds.height, Math.round(canvasSounds.height/this.maxSounds));
   };
 
   this.loadAllSoundSamples = function(finishedCallback, progressCallback, scope) {
     // Instantiates sounds for loading the buffers
     var testSound = new Sound({ filepath: '/sounds/test.mp3', onload: {fn: soundLoaded, scope: this}, context: this.context});
-    var testSoundCopy = new Sound({ filepath: '/sounds/test.mp3', onload: {fn: soundLoaded, scope: this}, context: this.context});
-
     this.sounds.push(testSound);
-    this.sounds.push(testSoundCopy);
 
     var _this = this, loadProgress = 0;
     function soundLoaded() {
@@ -44,7 +42,10 @@ var Playlist = function(canvasPlaying, canvasSounds) {
   this.finishedLoading = function(scope, callback) {
     console.log("Finished loading");
 
-    this.__drawTrack(this.sounds[0].buffer);
+    var _this = this;
+    _.forEach(this.sounds, function(sound, i) {
+      _this.__drawTrack(sound.buffer, i);
+    });
 
     this.__buildGraph();
     callback.call(scope);
@@ -101,7 +102,7 @@ var Playlist = function(canvasPlaying, canvasSounds) {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       ctx.fillStyle = 'white';
       ctx.font = '14pt Arial';
-      ctx.fillText(this.elapsedTimeSinceStart.toPrecision(4), 100, 20);
+      ctx.fillText(this.elapsedTimeSinceStart.toPrecision(4), canvas.width/2, canvas.height/2);
 
       // at least one track has been loaded
       if (this.sounds.length) {

@@ -1,0 +1,11 @@
+html, body, .ng-scope {
+    height: 100%;
+    overflow: hidden;
+}
+
+canvas.song {
+    position: absolute;
+    width: inherit;
+    height: 100%;
+    border: 1px solid black;
+}

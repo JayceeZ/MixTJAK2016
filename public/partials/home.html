@@ -1,18 +1,18 @@
 <div id="home">
-  <div class="jumbotron">
-    <div class="container">
-      <div id="top-bar" class="playlist-top-bar">
-        <div class="playlist-toolbar">
-          <div class="btn-group">
-            <span class="glyphicon glyphicon-pause btn btn-warning"></span>
-            <span class="glyphicon glyphicon-play btn btn-success" ng-click="onClickPlay()"></span>
-            <span class="glyphicon glyphicon-stop btn btn-danger" ng-click="onClickStop()"></span>
-          </div>
+  <div class="container">
+    <div id="top-bar" class="playlist-top-bar">
+      <div class="playlist-toolbar">
+        <div class="btn-group">
+          <span class="glyphicon glyphicon-pause btn btn-warning"></span>
+          <span class="glyphicon glyphicon-play btn btn-success" ng-click="onClickPlay()"></span>
+          <span class="glyphicon glyphicon-stop btn btn-danger" ng-click="onClickStop()"></span>
         </div>
-        <div>{{ progress }}</div>
       </div>
-      <canvas id="playing" style="position: absolute;" width="800" height="100"></canvas>
-      <canvas id="sounds" width="800" height="100"></canvas>
+      <div>Loaded songs : {{ progress }}</div>
     </div>
+  </div>
+  <div class="container">
+    <canvas id="sounds" class="song" resize></canvas>
+    <canvas id="playing" class="song" resize></canvas>
   </div>
 </div>
