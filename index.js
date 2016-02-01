@@ -1,19 +1,21 @@
+//============ Dependencies ===================
 var express = require('express'),
     passport = require('passport'),
-    LocalStrategy = require('passport-local').Strategy,
     logger = require('morgan'),
     bodyParser = require('body-parser'),
     cookieParser = require('cookie-parser'),
     path = require("path"),
     mongoose = require('mongoose'),
-    _ = require('lodash'),
-    schemas = require('./schemas.js');
+    session = require('express-session'),
+    _ = require('lodash');
+
+//============= MongoDB Setup ==================
 
 var databaseUrl = "mongodb://127.0.0.1:27017/";
 var database = "mixtjak2016_development";
 mongoose.connect(databaseUrl+database);
 
-/* Express server */
+//============== Express server =================
 var app = express();
 
 app.use(function(req, res, next) {
@@ -26,82 +28,61 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-app.use(passport.initialize());
-app.use(passport.session());
+app.use(session({secret: 'mixtjak2016', saveUninitialized: true, resave: true}));
 app.use(express.static(path.join(__dirname, 'public/')));
 
 /**
- * Authentication
+ * Authentication with passport && sessions
  */
-passport.use('local-signin', new LocalStrategy(
-  function(username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        console.log("Login failure: " + username);
-        return done(null, false, { message: 'Incorrect username.' });
-      }
-      if (!user.validPassword(password)) {
-        console.log("Login failure: " + password);
-        return done(null, false, { message: 'Incorrect password.' });
-      }
-      console.log("Login success: " + user.username);
-      return done(null, user);
-    });
-  }
-));
+app.use(passport.initialize());
+app.use(passport.session());
 
-passport.use('local-signup', new LocalStrategy(
-  {passReqToCallback : true}, //allows us to pass back the request to the callback
-  function(req, username, password, done) {
-    funct.localReg(username, password)
-      .then(function (user) {
-        if (user) {
-          console.log("REGISTERED: " + user.username);
-          req.session.success = 'You are successfully registered and logged in ' + user.username + '!';
-          done(null, user);
+var User = require('./schemas/user');
+
+passport.use(User.createStrategy());
+
+passport.serializeUser(User.serializeUser());
+passport.deserializeUser(User.deserializeUser());
+
+app.post('/login', function(req, res) {
+  console.log('Authenticating user ' + req.body.username);
+  var user = User.findOne({username: req.body.username}, function(err, result) {
+    if(err) {
+      console.log('Error on user authentication :', err);
+      return next(err);
+    }
+    if(result) {
+      result.authenticate(req.body.password, function (err, user, passwordErr) {
+        if (passwordErr) {
+          console.log('Error on user authentication :', passwordErr.message);
+          res.status(401);
+        } else {
+          console.log('User ' + req.body.username + ' authenticated');
+          res.status(204);
         }
-        if (!user) {
-          console.log("COULD NOT REGISTER");
-          req.session.error = 'That username is already in use, please try a different one.'; //inform user could not log them in
-          done(null, user);
-        }
-      })
-      .fail(function (err){
-        console.log(err.body);
       });
-  }
-));
-
-app.post('/login',
-  function() {
-    console.log('Login post');
-    passport.authenticate('local-signin',
-      {
-        successRedirect: '/',
-        failureRedirect: '/'
-      });
-  }
-);
-
-app.post('/signup',
-  function() {
-    console.log('Sign up post');
-    passport.authenticate('local-signup',
-      {
-        successRedirect: '/',
-        failureRedirect: '/'
-      });
-  }
-);
-
-passport.serializeUser(function(user, done) {
-  done(null, user.id);
+    } else {
+      console.log('Error on user authentication : username incorrect');
+    }
+  });
 });
 
-passport.deserializeUser(function(id, done) {
-  User.findById(id, function(err, user) {
-    done(err, user);
+app.get('/logout', function(req, res) {
+  req.logout();
+  res.redirect('/');
+});
+
+app.post('/user/register', function(req, res, next) {
+  console.log('Registering user');
+  User.register(new User({username: req.body.username}), req.body.password, function(err) {
+    if (err) {
+      console.log('Error on user registration', err);
+      return next(err);
+    }
+
+    console.log('User '+ req.body.username +' successfully registered');
+
+    res.redirect('/');
   });
 });
 
