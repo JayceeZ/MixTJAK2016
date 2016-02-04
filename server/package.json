@@ -7,6 +7,13 @@
     "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node index.js"
   },
+  "apidoc": {
+    "title": "API Documentation for MixTJAK2016",
+    "order": [
+      "GetProject",
+      "PostProject"
+    ]
+  },
   "author": "",
   "license": "ISC",
   "dependencies": {
@@ -20,6 +27,7 @@
     "mongoose": "^4.4.1",
     "mongoose-relationship": "^0.1.5",
     "morgan": "^1.6.1",
+    "multer": "^1.1.0",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "passport-local-mongoose": "^4.0.0",

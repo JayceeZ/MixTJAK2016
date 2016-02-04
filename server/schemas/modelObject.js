@@ -3,10 +3,7 @@ var mongoose = require('mongoose'),
 
 mongoose.connect('mongodb://localhost/test');
 
-
 var Schema = mongoose.Schema;
-
-
 
 // create a schema
 var userSchema = new Schema({
@@ -15,7 +12,6 @@ var userSchema = new Schema({
     password: { type: String, required: true }
   },
   playlist : [{ type:Schema.ObjectId, ref:"Playlist" }]
-
 });
 
 // the schema is useless so far
@@ -35,7 +31,7 @@ var soundSchema = new Schema({
   parents: [{ type:Schema.ObjectId, ref:"Playlist", childPath:"sounds" }]
 });
 
-var Sound = mongoose.model("Sound",soundSchema);
+var Sound = mongoose.model("Sound", soundSchema);
 
 // on every save, add the date
 userSchema.pre('save', function(next) {

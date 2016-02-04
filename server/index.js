@@ -7,7 +7,18 @@ var express = require('express'),
     path = require("path"),
     mongoose = require('mongoose'),
     session = require('express-session'),
+    multer = require('multer'),
     _ = require('lodash');
+
+//================ Upload ======================
+
+var storage = multer.diskStorage({
+  destination: "./../public/uploads/",
+  filename: function (req, file, cb) {
+    cb(null, Date.now() + "-" + file.originalname);
+  }
+});
+var upload = multer({ storage: storage });
 
 //============= MongoDB Setup ==================
 
@@ -29,7 +40,7 @@ app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
 app.use(session({secret: 'mixtjak2016', saveUninitialized: true, resave: true}));
-app.use(express.static(path.join(__dirname, 'public/')));
+app.use(express.static(path.join(__dirname, '../public/')));
 
 /**
  * Authentication with passport && sessions
@@ -89,12 +100,21 @@ app.post('/user/register', function(req, res, next) {
 /**
  * REST API
  */
-app.post('/project', function(req, res) {
-  if(!req.accepts('application/json'))
-    return;
-  var askedName = req.body.name;
 
-  schemas.Project.findOne({ name: askedName }, function(err, result) {
+var schemas = require('./schemas/modelObject');
+
+/**
+ * @api {get} /project/:id Request Project
+ * @apiName GetProject
+ * @apiGroup Project
+ *
+ * @apiParam {Number} id Project unique ID.
+ *
+ * @apiSuccess {String} name Name of the Project.
+ * @apiSuccess {Array} sounds Sounds of the project.
+ */
+app.get('/playlist/:id', function(req, res) {
+  schemas.Playlist.findOne({ id: req.id }, function(err, result) {
     if(result)
       res.status(200).json(result);
     else
@@ -102,25 +122,24 @@ app.post('/project', function(req, res) {
   });
 });
 
-app.post('/project/sound', function(req, res) {
-  if(!req.accepts('application/json'))
-    return;
-  var askedName = req.body.name;
-  var newSound = req.body.sound;
-
-  schemas.Project.findOne({ name: askedName }, function(err, result) {
+/**
+ * @api {get} /project/:id/sounds Request Project Sounds
+ * @apiName GetProjectSounds
+ * @apiGroup Project
+ *
+ * @apiParam {Number} id Project unique ID.
+ * @apiSuccess {Array} Sounds of the project.
+ */
+app.get('/playlist/:id/sounds', function(req, res) {
+  schemas.Playlist.findOne({ id: req.id }, function(err, result) {
     if(result) {
-      var nouveauSon = new schemas.Sound({name: newSound});
-      result.sounds.push(nouveauSon);
-      result.save();
-      nouveauSon.save();
-      res.status(200).json(result);
+      res.status(200).json(result.sounds);
     } else
       res.status(404);
   });
 });
 
-app.post('/project/new', function (req, res) {
+app.post('/playlist/new', function (req, res) {
   if(!req.accepts('application/json'))
     return;
   var reqJson = req.body;
@@ -134,6 +153,11 @@ app.post('/project/new', function (req, res) {
     else
       res.status(200).json({ message: 'Project have been created', project: project });
   }, this);
+});
+
+app.post('/upload/sound', upload.single('sound'), function(req, res, next) {
+  console.log("Sound uploaded to " + req.file.path);
+  res.status(200).json("uploads/"+req.file.filename);
 });
 
 // LAUNCH SERVER
