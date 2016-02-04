@@ -155,6 +155,14 @@ app.post('/playlist/new', function (req, res) {
   }, this);
 });
 
+/**
+ * @api {post} /upload/sound Upload Sound
+ * @apiName PostSound
+ * @apiGroup Sound
+ *
+ * @apiParam {File} sound Sound file
+ * @apiSuccess {String} response Url of the uploaded file
+ */
 app.post('/upload/sound', upload.single('sound'), function(req, res, next) {
   console.log("Sound uploaded to " + req.file.path);
   res.status(200).json("uploads/"+req.file.filename);
