@@ -1,8 +1,6 @@
 var mongoose = require('mongoose'),
     relationship = require('mongoose-relationship');
 
-mongoose.connect('mongodb://localhost/test');
-
 var Schema = mongoose.Schema;
 
 // create a schema
@@ -13,10 +11,6 @@ var userSchema = new Schema({
   },
   playlist : [{ type:Schema.ObjectId, ref:"Playlist" }]
 });
-
-// the schema is useless so far
-// we need to create a model using it
-var User = mongoose.model('User', userSchema);
 
 var playListSchema = new Schema({
     parent: { type:Schema.ObjectId, ref:"User", childPath:"playlist" },
@@ -51,7 +45,4 @@ userSchema.pre('save', function(next) {
 
 
 // make this available to our users in our Node applications
-module.exports = { Playlist:Playlist, User:User, Sound:Sound};
-
-
-console.log("test");
+module.exports = { Playlist:Playlist, Sound:Sound};
