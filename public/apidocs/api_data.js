@@ -80,6 +80,42 @@ define({ "api": [
   },
   {
     "type": "post",
+    "url": "/playlist/new",
+    "title": "New Playlist",
+    "name": "PostNewPlaylist",
+    "group": "Playlist",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "name",
+            "description": "<p>Playlist name.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "response",
+            "description": "<p>Unique Playlist Id</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./index.js",
+    "groupTitle": "Playlist"
+  },
+  {
+    "type": "post",
     "url": "/upload/sound",
     "title": "Upload Sound",
     "name": "PostSound",

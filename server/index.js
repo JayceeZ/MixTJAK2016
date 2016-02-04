@@ -142,6 +142,14 @@ app.get('/playlist/:id/sounds', function(req, res) {
   });
 });
 
+/**
+ * @api {post} /playlist/new New Playlist
+ * @apiName PostNewPlaylist
+ * @apiGroup Playlist
+ *
+ * @apiParam {String} name Playlist name.
+ * @apiSuccess {String} response Unique Playlist Id
+ */
 app.post('/playlist/new', function (req, res) {
   if(!req.accepts('application/json'))
     return;
@@ -149,12 +157,12 @@ app.post('/playlist/new', function (req, res) {
 
   var name = reqJson.name;
 
-  var project = new schemas.Project({name: name});
-  project.save(function (err) {
+  var playlist = new schemas.Playlist({name: name});
+  playlist.save(function (err) {
     if (err)
-      res.status(500).json({ message: 'Request is malformed' });
+      res.status(500).json('Request is malformed');
     else
-      res.status(200).json({ message: 'Project have been created', project: project });
+      res.status(200).json(playlist._id);
   }, this);
 });
 
