@@ -104,14 +104,14 @@ app.post('/user/register', function(req, res, next) {
 var schemas = require('./schemas/modelObject');
 
 /**
- * @api {get} /project/:id Request Project
- * @apiName GetProject
- * @apiGroup Project
+ * @api {get} /playlist/:id Request Playlist
+ * @apiName GetPlaylist
+ * @apiGroup Playlist
  *
- * @apiParam {Number} id Project unique ID.
+ * @apiParam {Number} id Playlist unique ID.
  *
- * @apiSuccess {String} name Name of the Project.
- * @apiSuccess {Array} sounds Sounds of the project.
+ * @apiSuccess {String} name Name of the Playlist.
+ * @apiSuccess {Array} sounds Sounds of the Playlist.
  */
 app.get('/playlist/:id', function(req, res) {
   schemas.Playlist.findOne({ id: req.id }, function(err, result) {
@@ -123,12 +123,12 @@ app.get('/playlist/:id', function(req, res) {
 });
 
 /**
- * @api {get} /project/:id/sounds Request Project Sounds
- * @apiName GetProjectSounds
- * @apiGroup Project
+ * @api {get} /playlist/:id/sounds Request Playlist Sounds
+ * @apiName GetPlaylistSounds
+ * @apiGroup Playlist
  *
- * @apiParam {Number} id Project unique ID.
- * @apiSuccess {Array} Sounds of the project.
+ * @apiParam {Number} id Playlist unique ID.
+ * @apiSuccess {Array} response itself Sounds of the playlist.
  */
 app.get('/playlist/:id/sounds', function(req, res) {
   schemas.Playlist.findOne({ id: req.id }, function(err, result) {
