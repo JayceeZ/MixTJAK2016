@@ -13,6 +13,7 @@ var userSchema = new Schema({
 });
 
 var playListSchema = new Schema({
+    name: { type: String, required: true, unique: true },
     parent: { type:Schema.ObjectId, ref:"User", childPath:"playlist" },
     sounds: [{ type:Schema.ObjectId, ref:"Sound" }]
 });
