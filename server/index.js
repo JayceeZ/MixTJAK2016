@@ -100,6 +100,9 @@ app.post('/user/register', function(req, res, next) {
 /**
  * REST API
  */
+// Generate doc with
+// apidoc -i ./ -o ../public/apidocs/ -e node_modules/
+// in server folder
 
 var schemas = require('./schemas/modelObject');
 

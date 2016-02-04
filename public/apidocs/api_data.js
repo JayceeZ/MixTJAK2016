@@ -79,31 +79,39 @@ define({ "api": [
     "groupTitle": "Playlist"
   },
   {
+    "type": "post",
+    "url": "/upload/sound",
+    "title": "Upload Sound",
+    "name": "PostSound",
+    "group": "Sound",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "File",
+            "optional": false,
+            "field": "sound",
+            "description": "<p>Sound file</p>"
+          }
+        ]
+      }
+    },
     "success": {
       "fields": {
         "Success 200": [
           {
             "group": "Success 200",
-            "optional": false,
-            "field": "varname1",
-            "description": "<p>No type.</p>"
-          },
-          {
-            "group": "Success 200",
             "type": "String",
             "optional": false,
-            "field": "varname2",
-            "description": "<p>With type.</p>"
+            "field": "response",
+            "description": "<p>Url of the uploaded file</p>"
           }
         ]
       }
     },
-    "type": "",
-    "url": "",
     "version": "0.0.0",
-    "filename": "./apidocs/main.js",
-    "group": "_home_isoard_Projets_MixTJAK2016_server_apidocs_main_js",
-    "groupTitle": "_home_isoard_Projets_MixTJAK2016_server_apidocs_main_js",
-    "name": ""
+    "filename": "./index.js",
+    "groupTitle": "Sound"
   }
 ] });
