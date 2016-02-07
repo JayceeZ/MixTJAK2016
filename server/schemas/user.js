@@ -2,7 +2,8 @@ var mongoose = require('mongoose'),
     passportLocalMongoose = require('passport-local-mongoose');
 
 var User = new mongoose.Schema({
-  uploads: []
+  uploads: [],
+  projects : [{ type: mongoose.Schema.ObjectId, ref:"Project", childPath:"user" }]
 });
 
 User.plugin(passportLocalMongoose);

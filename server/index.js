@@ -39,7 +39,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-app.use(session({secret: 'mixtjak2016', saveUninitialized: true, resave: true}));
+//app.use(session({secret: 'mixtjak2016', saveUninitialized: true, resave: true}));
 app.use(express.static(path.join(__dirname, '../public/')));
 
 /**
@@ -66,10 +66,10 @@ app.post('/login', function(req, res) {
       result.authenticate(req.body.password, function (err, user, passwordErr) {
         if (passwordErr) {
           console.log('Error on user authentication :', passwordErr.message);
-          res.status(401);
+          res.status(401).send();
         } else {
           console.log('User ' + req.body.username + ' authenticated');
-          res.status(204);
+          res.status(204).send();
         }
       });
     } else {
@@ -83,7 +83,7 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
-app.post('/user/register', function(req, res, next) {
+app.post('/register', function(req, res, next) {
   console.log('Registering user');
   User.register(new User({username: req.body.username}), req.body.password, function(err) {
     if (err) {

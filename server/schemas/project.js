@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var projectSchema = new Schema({
     name: { type: String, required: true },
-    parent: { type:Schema.ObjectId, ref: "User", childPath:"projects" },
+    user: { type:Schema.ObjectId, ref: "User", childPath:"projects" },
     filters: { type: Array },
     regions: { type: Array },
     tracks: { type: Array }

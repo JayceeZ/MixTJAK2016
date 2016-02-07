@@ -16,6 +16,23 @@ var testUser = new User({username: "test"});
 var projectTestId = null;
 
 describe("API REST", function() {
+  /*before(function(done) {
+    var url = "register";
+
+    var user = {
+      username: "test",
+      password: "test"
+    };
+    chai
+      .request(server)
+      .post(url)
+      .send(user)
+      .end(function(error, response) {
+        chai.expect(response.statusCode).to.equals(200);
+        done();
+      });
+  }); */
+
   describe("Fetch of a sound", function() {
     var url = "uploads/test.mp3";
 
@@ -40,63 +57,82 @@ describe("API REST", function() {
       });
     });
   });
+  describe("User activity", function() {
 
-  describe("Save of a project", function() {
-    var url = "project/save";
-    var project = {
-      name: "Test Project",
-      user: 12345,
-      tracks: ["test.mp3", "test.mp3"],
-      filters: [[10,0,0,0,0,0,0,0,0,0,1,0,0,1], [5,0,0,0,0,0,0,0,0,0,1,0,0,1]],
-      regions: [[0, 400], [200, 300]]
-    };
+    before(function(done) {
+      var url = "login";
 
-    it("returns status 200 with project id", function(done) {
+      var user = {
+        username: "test",
+        password: "test"
+      };
       chai
         .request(server)
         .post(url)
-        .send(project)
-        .end(function(error, response, body) {
-          chai.expect(response.statusCode).to.equal(200);
-          chai.expect(response.body).to.be.a('string');
-          projectTestId = response.body;
+        .send(user)
+        .end(function(error, response) {
+          chai.expect(response.statusCode).to.equals(204);
           done();
+        });
+    });
 
-          describe("Project manipulations", function() {
-            var url = "project/"+projectTestId;
+    describe("Save of a project", function () {
+      var url = "project/save";
+      var project = {
+        name: "Test Project",
+        user: 12345,
+        tracks: ["test.mp3", "test.mp3"],
+        filters: [[10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1], [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1]],
+        regions: [[0, 400], [200, 300]]
+      };
 
-            it("return status 200", function(done) {
-              chai
-                .request(server)
-                .get(url)
-                .end(function(error, response) {
-                  chai
-                    .expect(response.statusCode).to.equal(200);
-                  done();
-                });
-            });
+      it("returns status 200 with project id", function (done) {
+        chai
+          .request(server)
+          .post(url)
+          .send(project)
+          .end(function (error, response) {
+            chai.expect(response.statusCode).to.equal(200);
+            chai.expect(response.body).to.be.a('string');
+            projectTestId = response.body;
+            done();
 
-            it("return the project", function(done) {
-              chai
-                .request(server)
-                .get(url)
-                .end(function(error, response) {
-                  chai.expect(response.body.name).to.equal(project.name);
-                  chai.expect(response.body.tracks).to.eql(project.tracks);
-                  chai.expect(response.body.filters).to.eql(project.filters);
-                  chai.expect(response.body.regions).to.eql(project.regions);
-                  done();
-                });
-            });
+            describe("Project manipulations", function () {
+              var url = "project/" + projectTestId;
 
-            it("delete the project", function(done) {
-              chai
-                .request(server)
-                .delete(url)
-                .end(function(error, response) {
-                  chai.expect(response.statusCode).to.equal(200);
-                  done();
-                });
+              it("return status 200", function (done) {
+                chai
+                  .request(server)
+                  .get(url)
+                  .end(function (error, response) {
+                    chai
+                      .expect(response.statusCode).to.equal(200);
+                    done();
+                  });
+              });
+
+              it("return the project", function (done) {
+                chai
+                  .request(server)
+                  .get(url)
+                  .end(function (error, response) {
+                    chai.expect(response.body.name).to.equal(project.name);
+                    chai.expect(response.body.tracks).to.eql(project.tracks);
+                    chai.expect(response.body.filters).to.eql(project.filters);
+                    chai.expect(response.body.regions).to.eql(project.regions);
+                    done();
+                  });
+              });
+
+              it("delete the project", function (done) {
+                chai
+                  .request(server)
+                  .delete(url)
+                  .end(function (error, response) {
+                    chai.expect(response.statusCode).to.equal(200);
+                    done();
+                  });
+              });
             });
           });
       });
