@@ -104,66 +104,123 @@ app.post('/user/register', function(req, res, next) {
 // apidoc -i ./ -o ../public/apidocs/ -e node_modules/
 // in server folder
 
-var schemas = require('./schemas/modelObject');
+var schemas = require('./schemas/project');
 
 /**
- * @api {get} /playlist/:id Request Playlist
- * @apiName GetPlaylist
- * @apiGroup Playlist
+ * @api {get} /projects Request All Projects
+ * @apiName GetProjects
+ * @apiGroup Project
  *
- * @apiParam {Number} id Playlist unique ID.
- *
- * @apiSuccess {String} name Name of the Playlist.
- * @apiSuccess {Array} sounds Sounds of the Playlist.
+ * @apiSuccess {Array} Array of all Projects.
  */
-app.get('/playlist/:id', function(req, res) {
-  schemas.Playlist.findOne({ id: req.id }, function(err, result) {
+app.get('/projects', function(req, res) {
+  schemas.Project.find({}, function(err, result) {
+    res.status(200).json(result);
+  });
+});
+
+/**
+ * @api {get} /project/:id Request Project Content
+ * @apiName GetProjectContent
+ * @apiGroup Project
+ *
+ * @apiParam {Number} id Project unique ID.
+ *
+ * @apiSuccess {String} name Name of the Project.
+ * @apiSuccess {Array} tracks Tracks of the Project.
+ * @apiSuccess {Array} filters Filters of the Project.
+ * @apiSuccess {Array} regions Regions of the Project.
+ * @apiSuccess {Integer} nbrTracks Number of tracks of the Project.
+ */
+app.get('/project/:id', function(req, res) {
+  schemas.Project.findOne({ id: req.id }, function(err, result) {
     if(result)
-      res.status(200).json(result);
+      res.status(200).json({name: result.name, tracks: result.tracks, filters: result.filters, regions: result.regions, nbrTracks: result.tracks.length});
     else
       res.status(404);
   });
 });
 
 /**
- * @api {get} /playlist/:id/sounds Request Playlist Sounds
- * @apiName GetPlaylistSounds
- * @apiGroup Playlist
+ * @api {get} /project/:id/tracks Request Project Tracks
+ * @apiName GetProjectTracks
+ * @apiGroup Project
  *
- * @apiParam {Number} id Playlist unique ID.
- * @apiSuccess {Array} response itself Sounds of the playlist.
+ * @apiParam {Number} id Project unique ID.
+ * @apiSuccess {Array} tracks Tracks of the Project.
  */
-app.get('/playlist/:id/sounds', function(req, res) {
-  schemas.Playlist.findOne({ id: req.id }, function(err, result) {
+app.get('/project/:id/tracks', function(req, res) {
+  schemas.Project.findOne({ id: req.id }, function(err, result) {
     if(result) {
-      res.status(200).json(result.sounds);
+      res.status(200).json({tracks: result.tracks});
     } else
       res.status(404);
   });
 });
 
 /**
- * @api {post} /playlist/new New Playlist
- * @apiName PostNewPlaylist
- * @apiGroup Playlist
+ * @api {post} /project/save Save new Project
+ * @apiName PostNewProject
+ * @apiGroup Project
  *
- * @apiParam {String} name Playlist name.
- * @apiSuccess {String} response Unique Playlist Id
+ * @apiParam {String} name Project name.
+ * @apiParam {Array} name Project tracks.
+ * @apiParam {Array} name Project filters.
+ * @apiParam {Array} name Project regions.
+ *
+ * @apiSuccess {String} response Unique Project Id
  */
-app.post('/playlist/new', function (req, res) {
+app.post('/project/save', function (req, res) {
   if(!req.accepts('application/json'))
     return;
   var reqJson = req.body;
 
   var name = reqJson.name;
 
-  var playlist = new schemas.Playlist({name: name});
-  playlist.save(function (err) {
-    if (err)
-      res.status(500).json('Request is malformed');
+  var tracks = reqJson.tracks;
+
+  var filters = reqJson.filters;
+  var regions = reqJson.regions;
+
+  var project = new schemas.Project(
+    {
+      name: name,
+      tracks: tracks,
+      filters: filters,
+      regions: regions
+    }
+  );
+  project.save(function (err) {
+    if (err) {
+      console.log(err);
+      res.status(400).json('Something went wrong: '+err);
+    }
     else
-      res.status(200).json(playlist._id);
+      res.status(200).json(project._id);
   }, this);
+});
+
+/**
+ * @api {delete} /project/:id Delete a Project
+ * @apiName DeleteProject
+ * @apiGroup Project
+ */
+app.delete('/project/:id', function (req, res) {
+  schemas.Project.findOne({ id: req.id }, function(err, result) {
+    if(!err) {
+      if(result)
+        result.remove({_id: req.id}, function (err) {
+          if (err)
+            res.status(500).json('Project could not be deleted: ' + err);
+          else
+            res.status(200).json('Project successfully deleted');
+        });
+      else
+        res.status(404).json('Project not found');
+    } else {
+      res.status(500).json('Error: '+err);
+    }
+  });
 });
 
 /**

@@ -1,10 +1,20 @@
 [
   {
+    "type": "delete",
+    "url": "/project/:id",
+    "title": "Delete a Project",
+    "name": "DeleteProject",
+    "group": "Project",
+    "version": "0.0.0",
+    "filename": "./index.js",
+    "groupTitle": "Project"
+  },
+  {
     "type": "get",
-    "url": "/playlist/:id",
-    "title": "Request Playlist",
-    "name": "GetPlaylist",
-    "group": "Playlist",
+    "url": "/project/:id",
+    "title": "Request Project Content",
+    "name": "GetProjectContent",
+    "group": "Project",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -13,7 +23,7 @@
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>Playlist unique ID.</p>"
+            "description": "<p>Project unique ID.</p>"
           }
         ]
       }
@@ -26,28 +36,49 @@
             "type": "String",
             "optional": false,
             "field": "name",
-            "description": "<p>Name of the Playlist.</p>"
+            "description": "<p>Name of the Project.</p>"
           },
           {
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "sounds",
-            "description": "<p>Sounds of the Playlist.</p>"
+            "field": "tracks",
+            "description": "<p>Tracks of the Project.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "filters",
+            "description": "<p>Filters of the Project.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "regions",
+            "description": "<p>Regions of the Project.</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Integer",
+            "optional": false,
+            "field": "nbrTracks",
+            "description": "<p>Number of tracks of the Project.</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
     "filename": "./index.js",
-    "groupTitle": "Playlist"
+    "groupTitle": "Project"
   },
   {
     "type": "get",
-    "url": "/playlist/:id/sounds",
-    "title": "Request Playlist Sounds",
-    "name": "GetPlaylistSounds",
-    "group": "Playlist",
+    "url": "/project/:id/tracks",
+    "title": "Request Project Tracks",
+    "name": "GetProjectTracks",
+    "group": "Project",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -56,7 +87,7 @@
             "type": "Number",
             "optional": false,
             "field": "id",
-            "description": "<p>Playlist unique ID.</p>"
+            "description": "<p>Project unique ID.</p>"
           }
         ]
       }
@@ -68,22 +99,45 @@
             "group": "Success 200",
             "type": "Array",
             "optional": false,
-            "field": "response",
-            "description": "<p>itself Sounds of the playlist.</p>"
+            "field": "tracks",
+            "description": "<p>Tracks of the Project.</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
     "filename": "./index.js",
-    "groupTitle": "Playlist"
+    "groupTitle": "Project"
+  },
+  {
+    "type": "get",
+    "url": "/projects",
+    "title": "Request All Projects",
+    "name": "GetProjects",
+    "group": "Project",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "Array",
+            "optional": false,
+            "field": "Array",
+            "description": "<p>of all Projects.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./index.js",
+    "groupTitle": "Project"
   },
   {
     "type": "post",
-    "url": "/playlist/new",
-    "title": "New Playlist",
-    "name": "PostNewPlaylist",
-    "group": "Playlist",
+    "url": "/project/save",
+    "title": "Save new Project",
+    "name": "PostNewProject",
+    "group": "Project",
     "parameter": {
       "fields": {
         "Parameter": [
@@ -92,7 +146,7 @@
             "type": "String",
             "optional": false,
             "field": "name",
-            "description": "<p>Playlist name.</p>"
+            "description": "<p>Project name.</p>"
           }
         ]
       }
@@ -105,14 +159,14 @@
             "type": "String",
             "optional": false,
             "field": "response",
-            "description": "<p>Unique Playlist Id</p>"
+            "description": "<p>Unique Project Id</p>"
           }
         ]
       }
     },
     "version": "0.0.0",
     "filename": "./index.js",
-    "groupTitle": "Playlist"
+    "groupTitle": "Project"
   },
   {
     "type": "post",
