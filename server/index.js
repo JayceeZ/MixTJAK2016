@@ -164,9 +164,9 @@ app.get('/project/:id/tracks', function(req, res) {
  * @apiGroup Project
  *
  * @apiParam {String} name Project name.
- * @apiParam {Array} name Project tracks.
- * @apiParam {Array} name Project filters.
- * @apiParam {Array} name Project regions.
+ * @apiParam {Array} tracks Project tracks.
+ * @apiParam {Array} filters Project filters.
+ * @apiParam {Array} regions Project regions.
  *
  * @apiSuccess {String} response Unique Project Id
  */
