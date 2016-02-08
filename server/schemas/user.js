@@ -3,6 +3,7 @@ var mongoose = require('mongoose'),
 
 var User = new mongoose.Schema({
   uploads: [],
+  rights: { type: Number, default: 1 }, // Default normal
   projects : [{ type: mongoose.Schema.ObjectId, ref:"Project", childPath:"user" }]
 });
 

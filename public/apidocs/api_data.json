@@ -224,5 +224,35 @@
     "version": "0.0.0",
     "filename": "./index.js",
     "groupTitle": "Sound"
+  },
+  {
+    "type": "post",
+    "url": "/register",
+    "title": "Register a User",
+    "name": "PostUser",
+    "group": "User",
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "id",
+            "description": "<p>Unique user ID</p>"
+          },
+          {
+            "group": "Success 200",
+            "type": "Number",
+            "optional": false,
+            "field": "rights",
+            "description": "<p>User rights.</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./index.js",
+    "groupTitle": "User"
   }
 ]

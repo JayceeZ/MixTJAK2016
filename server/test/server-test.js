@@ -16,7 +16,7 @@ var testUser = new User({username: "test"});
 var projectTestId = null;
 
 describe("API REST", function() {
-  /*before(function(done) {
+  before(function(done) {
     var url = "register";
 
     var user = {
@@ -29,9 +29,11 @@ describe("API REST", function() {
       .send(user)
       .end(function(error, response) {
         chai.expect(response.statusCode).to.equals(200);
+        chai.expect(response.body.id).to.be.a('string');
+        chai.expect(response.body.id).to.be.a('number');
         done();
       });
-  }); */
+  });
 
   describe("Fetch of a sound", function() {
     var url = "uploads/test.mp3";

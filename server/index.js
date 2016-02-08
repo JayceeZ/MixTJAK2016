@@ -55,6 +55,14 @@ passport.use(User.createStrategy());
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
+
+/**
+ * REST API
+ */
+// Generate doc with
+// apidoc -i ./ -o ../public/apidocs/ -e node_modules/
+// in server folder
+
 app.post('/login', function(req, res) {
   console.log('Authenticating user ' + req.body.username);
   var user = User.findOne({username: req.body.username}, function(err, result) {
@@ -83,26 +91,27 @@ app.get('/logout', function(req, res) {
   res.redirect('/');
 });
 
+/**
+ * @api {post} /register Register a User
+ * @apiName PostUser
+ * @apiGroup User
+ *
+ * @apiSuccess {String} id Unique user ID
+ * @apiSuccess {Number} rights User rights.
+ */
 app.post('/register', function(req, res, next) {
   console.log('Registering user');
-  User.register(new User({username: req.body.username}), req.body.password, function(err) {
+  User.register(new User({username: req.body.username}), req.body.password, function(err, result) {
     if (err) {
       console.log('Error on user registration', err);
+      res.status(401).json('Error on registration');
       return next(err);
     }
 
     console.log('User '+ req.body.username +' successfully registered');
-
-    res.redirect('/');
+    res.status(200).json({id: result._id, rights: result.rights});
   });
 });
-
-/**
- * REST API
- */
-// Generate doc with
-// apidoc -i ./ -o ../public/apidocs/ -e node_modules/
-// in server folder
 
 var schemas = require('./schemas/project');
 
