@@ -150,6 +150,70 @@ define({ "api": [
           },
           {
             "group": "Parameter",
+            "type": "String",
+            "optional": false,
+            "field": "userId",
+            "description": "<p>User id.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "tracks",
+            "description": "<p>Project tracks.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "filters",
+            "description": "<p>Project filters.</p>"
+          },
+          {
+            "group": "Parameter",
+            "type": "Array",
+            "optional": false,
+            "field": "regions",
+            "description": "<p>Project regions.</p>"
+          }
+        ]
+      }
+    },
+    "success": {
+      "fields": {
+        "Success 200": [
+          {
+            "group": "Success 200",
+            "type": "String",
+            "optional": false,
+            "field": "response",
+            "description": "<p>Unique Project Id</p>"
+          }
+        ]
+      }
+    },
+    "version": "0.0.0",
+    "filename": "./index.js",
+    "groupTitle": "Project"
+  },
+  {
+    "type": "post",
+    "url": "/project/:id",
+    "title": "Update a Project",
+    "name": "UpdateProject",
+    "group": "Project",
+    "parameter": {
+      "fields": {
+        "Parameter": [
+          {
+            "group": "Parameter",
+            "type": "Number",
+            "optional": false,
+            "field": ":id",
+            "description": "<p>Project id.</p>"
+          },
+          {
+            "group": "Parameter",
             "type": "Array",
             "optional": false,
             "field": "tracks",

@@ -39,7 +39,7 @@ app.use(logger('dev'));
 app.use(bodyParser.json()); // for parsing application/json
 app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x-www-form-urlencoded
 app.use(cookieParser());
-//app.use(session({secret: 'mixtjak2016', saveUninitialized: true, resave: true}));
+app.use(session({secret: 'mixtjak2016', saveUninitialized: true, resave: true}));
 app.use(express.static(path.join(__dirname, '../public/')));
 
 /**
@@ -63,6 +63,16 @@ passport.deserializeUser(User.deserializeUser());
 // apidoc -i ./ -o ../public/apidocs/ -e node_modules/
 // in server folder
 
+/**
+ * @api {post} /login Login User
+ * @apiName PostUserLogin
+ * @apiGroup User
+ *
+ * @apiParam {String} username User name
+ * @apiParam {String} password User password
+ *
+ * @apiSuccess {String} id User unique ID.
+ */
 app.post('/login', function(req, res) {
   console.log('Authenticating user ' + req.body.username);
   var user = User.findOne({username: req.body.username}, function(err, result) {
@@ -77,11 +87,24 @@ app.post('/login', function(req, res) {
           res.status(401).send();
         } else {
           console.log('User ' + req.body.username + ' authenticated');
-          res.status(204).send();
+          res.status(200).send({ id: result._id, projects: result.projects, rights: result.rights });
         }
       });
     } else {
       console.log('Error on user authentication : username incorrect');
+      res.status(404).json('Username not found');
+    }
+  });
+});
+
+app.get('/user/:id', function(req, res) {
+  User.findOne({ id: req.id }, function(error, result) {
+    if(error)
+      res.status(500).send();
+    else if(result) {
+      res.status(200).json({ name: result.username, projects: result.projects, rights: result.rights });
+    } else {
+      res.status(404).json("User don't exist");
     }
   });
 });
@@ -105,11 +128,11 @@ app.post('/register', function(req, res, next) {
     if (err) {
       console.log('Error on user registration', err);
       res.status(401).json('Error on registration');
-      return next(err);
     }
-
-    console.log('User '+ req.body.username +' successfully registered');
-    res.status(200).json({id: result._id, rights: result.rights});
+    else {
+      console.log('User ' + req.body.username + ' successfully registered');
+      res.status(200).json({id: result._id, rights: result.rights});
+    }
   });
 });
 
@@ -173,6 +196,8 @@ app.get('/project/:id/tracks', function(req, res) {
  * @apiGroup Project
  *
  * @apiParam {String} name Project name.
+ * @apiParam {String} userId User id.
+ *
  * @apiParam {Array} tracks Project tracks.
  * @apiParam {Array} filters Project filters.
  * @apiParam {Array} regions Project regions.
@@ -184,29 +209,74 @@ app.post('/project/save', function (req, res) {
     return;
   var reqJson = req.body;
 
-  var name = reqJson.name;
-
+  var userId = reqJson.userId;
   var tracks = reqJson.tracks;
-
   var filters = reqJson.filters;
   var regions = reqJson.regions;
 
-  var project = new schemas.Project(
-    {
-      name: name,
-      tracks: tracks,
-      filters: filters,
-      regions: regions
+  User.findOne({ _id: userId }, function(error, result) {
+    if(error) {
+      res.status(401).json('Error '+error);
+      return;
     }
-  );
-  project.save(function (err) {
-    if (err) {
-      console.log(err);
-      res.status(400).json('Something went wrong: '+err);
+
+    if(result) {
+      console.log("User found creating project");
+      var project = new schemas.Project(
+        {
+          user: result._id,
+          tracks: tracks,
+          filters: filters,
+          regions: regions
+        }
+      );
+      project.save(function(err) {
+        if (err) {
+          res.status(400).json('Something went wrong: ' + err);
+        } else {
+          res.status(200).json(project._id);
+          result.projects.push(project._id);
+          result.save();
+        }
+      });
+    } else {
+      res.status(404).json('User not found');
     }
-    else
-      res.status(200).json(project._id);
-  }, this);
+  });
+});
+
+/**
+ * @api {post} /project/:id Update a Project
+ * @apiName UpdateProject
+ * @apiGroup Project
+ *
+ * @apiParam {Number} :id Project id.
+ *
+ * @apiParam {Array} tracks Project tracks.
+ * @apiParam {Array} filters Project filters.
+ * @apiParam {Array} regions Project regions.
+ *
+ * @apiSuccess {String} response Unique Project Id
+ */
+app.post('/project/:id', function (req, res) {
+  if(!req.accepts('application/json'))
+    return;
+  var reqJson = req.body;
+
+  schemas.Project.findOne({ id: req.id }, function(error, result) {
+    if(error) {
+      res.status(401).json('Project could not be updated: '+error);
+    }
+    if(result) {
+      result.tracks = reqJson.tracks;
+      result.filters = reqJson.filters;
+      result.regions = reqJson.regions;
+      result.save();
+      res.status(200).json(result._id);
+    } else {
+      res.status(404).json('Project with id '+req.id+' does not exist');
+    }
+  });
 });
 
 /**
@@ -221,8 +291,9 @@ app.delete('/project/:id', function (req, res) {
         result.remove({_id: req.id}, function (err) {
           if (err)
             res.status(500).json('Project could not be deleted: ' + err);
-          else
+          else {
             res.status(200).json('Project successfully deleted');
+          }
         });
       else
         res.status(404).json('Project not found');
@@ -241,8 +312,12 @@ app.delete('/project/:id', function (req, res) {
  * @apiSuccess {String} response Url of the uploaded file
  */
 app.post('/upload/sound', upload.single('sound'), function(req, res, next) {
-  console.log("Sound uploaded to " + req.file.path);
-  res.status(200).json("uploads/"+req.file.filename);
+  if(req.file) {
+    console.log("Sound uploaded to " + req.file.path);
+    res.status(200).json("uploads/" + req.file.filename);
+  } else {
+    res.status(401).json("No file were given (attr: sound)");
+  }
 });
 
 // LAUNCH SERVER

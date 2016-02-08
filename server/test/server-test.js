@@ -12,7 +12,7 @@ var server = "http://localhost:8000/";
 var projectObjects = require("../schemas/project");
 var User = require("../schemas/user");
 
-var testUser = new User({username: "test"});
+var testUserId = null;
 var projectTestId = null;
 
 describe("API REST", function() {
@@ -28,9 +28,12 @@ describe("API REST", function() {
       .post(url)
       .send(user)
       .end(function(error, response) {
-        chai.expect(response.statusCode).to.equals(200);
-        chai.expect(response.body.id).to.be.a('string');
-        chai.expect(response.body.id).to.be.a('number');
+        if(response.statusCode !== 401) {
+          chai.expect(response.statusCode).to.equals(200);
+          chai.expect(response.body.id).to.be.a('string');
+          chai.expect(response.body.rights).to.be.a('number');
+        }
+        testUserId = response.body;
         done();
       });
   });
@@ -73,7 +76,8 @@ describe("API REST", function() {
         .post(url)
         .send(user)
         .end(function(error, response) {
-          chai.expect(response.statusCode).to.equals(204);
+          chai.expect(response.statusCode).to.equals(200);
+          // TODO: test id/rights
           done();
         });
     });
@@ -82,7 +86,7 @@ describe("API REST", function() {
       var url = "project/save";
       var project = {
         name: "Test Project",
-        user: 12345,
+        user: testUserId,
         tracks: ["test.mp3", "test.mp3"],
         filters: [[10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1], [5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 0, 0, 1]],
         regions: [[0, 400], [200, 300]]
