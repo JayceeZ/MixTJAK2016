@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="ISO-8859-1">
+	<title>MiXx</title>
+	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
+	<link rel="stylesheet" type="text/css" href="css/index.css">
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
+	<link href="https://fonts.googleapis.com/css?family=Open+Sans:300,400,600,700" media="screen" rel="stylesheet" type="text/css" />
+	
+	<!-- Framework -->
+	<script src="js/jquery.min.js"></script>
+	<script src="js/bootstrap.min.js"></script>
+	<script src="js/wavesurfer.min.js"></script>
+	<script src="js/wavesurfer.regions.js"></script>
+	  <script src="//code.jquery.com/ui/1.11.4/jquery-ui.js"></script>
+</head>
+<body>
+
+	<div id="indication" style="position:absolute;color:red;margin-left:2%;">
+		
+	</div>
+
+	<div class="container-fluid">
+		<div id="connected-or-disconnected" class="row header-top">
+		</div>
+	</div>
+	
+	<div class="container-fluid">
+		<div class="row" style="background:#dddddd;height:50px;">
+			<div class="col-md-offset-1 col-md-2" style="line-height:50px;text-align: right;">
+				<strong>Ajouter une musique :</strong>
+			</div>
+			<div class="col-md-1" style="line-height:50px;">
+				<button id="plus" type="button" class="btn btn-success" aria-label="Left Align">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</button>
+				<input type="file" name="select-files" id="select-files" value="" style="display: none;">
+			</div>
+			
+			<div class="col-md-2" style="line-height:50px;">
+				<button id="play" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-play" aria-hidden="true"></span>
+				</button>
+				<button id="pause" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-pause" aria-hidden="true"></span>
+				</button>
+				<button id="stop" type="button" class="btn btn-default" aria-label="Left Align">
+					<span class="glyphicon glyphicon-stop" aria-hidden="true"></span>
+				</button>
+				<input type="file" name="sound" id="select-files" value="" style="display: none;">
+			</div>
+			<div class="col-md-2" style="line-height:50px;text-align: right;">
+				<strong>Ajouter/retirer un projet :</strong>
+			</div>
+			<div class="col-md-2" style="line-height:50px;">
+				<button id="newproject" type="button" class="btn btn-success" aria-label="Left Align">
+					<span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+				</button>
+				<button id="removeproject" type="button" class="btn btn-danger" aria-label="Left Align">
+					<span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+				</button>
+			</div>
+			<div class="col-md-1" style="line-height:50px;">
+				<select id="listproject" style="width:100%;">
+				  <!--  <option value="audi"></option> -->
+				</select>
+			</div>
+			<div class="col-md-1" style="line-height:50px;">
+				<button id="allproject" type="button" class="btn btn-info" aria-label="Left Align" style="position: relative;left: 100%;transform: translateX(-100%);">
+					<span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
+				</button>
+			</div>
+		</div>
+		             <div class="progress progress-striped active" id="progress-bar">
+                 <div class="progress-bar progress-bar-info"></div>
+             </div>
+		<div id="track">
+		</div>
+	</div>
+	<div id="result"></div>
+</body>
+<script src="js/constantes.js"></script>
+<script src="js/userPrototype.js"></script>
+<script src="js/projectPrototype.js"></script>
+<script src="js/server.js"></script>
+<script src="js/session.js"></script>
+<script src="js/index.js"></script>
+<script src="js/init.js"></script>
+</html>
