@@ -87,24 +87,17 @@ app.post('/login', function(req, res) {
         } else {
           console.log('User ' + req.body.username + ' authenticated');
 
-          //code audric
-          user.ztestvar="testvarcontent";
 
-          var caches = [];
-          var autest = JSON.stringify(user, function(key, value) {
-            if (typeof value === 'object' && value !== null) {
-              if (caches.indexOf(value) !== -1) {
-                // Circular reference found, discard key
-                return;
-              }
-              // Store value in our collection
-              caches.push(value);
-            }
-            return value;
-          });
-          caches = null; // En
+          console.log("sessionID : ");
+          console.log("user.sessionID");
+          console.log(req.sessionID);
+          if(req.sessionID != user.sessionID){
+            console.log("OKKKKKKKKKKKKKKKKKKK");
+          }
 
-          res.status(200).send(autest);// { id: result._id, projects: result.projects, rights: result.rights });
+          user.sessionID=req.sessionID;
+          user.save();
+          res.status(200).send({ id: result._id, projects: result.projects, rights: result.rights , sessionID:req.sessionID});
         }
       });
     } else {
@@ -148,7 +141,7 @@ app.post('/register', function(req, res, next) {
     }
     else {
       console.log('User ' + req.body.username + ' successfully registered');
-      res.status(200).json({id: result._id, rights: result.rights});
+      res.status(200).json({id: result._id, rights: result.rights, sessionID:req.sessionID});
     }
   });
 });
@@ -182,6 +175,9 @@ app.get('/projects', function(req, res) {
  * @apiSuccess {Integer} nbrTracks Number of tracks of the Project.
  */
 app.get('/project/:id', function(req, res) {
+  console.log("////////////////////////////////////////////////////////////////");
+  console.log(req.sessionID);
+  console.log("////////////////////////////////////////////////////////////////");
   schemas.Project.findOne({ id: req.id }, function(err, result) {
     if(result)
       res.status(200).json({name: result.name, tracks: result.tracks, filters: result.filters, regions: result.regions, nbrTracks: result.tracks.length});

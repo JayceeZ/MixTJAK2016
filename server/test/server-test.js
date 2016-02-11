@@ -7,7 +7,7 @@ var chaiHttp = require("chai-http");
 
 chai.use(chaiHttp);
 
-var server = "http://localhost:8000/";
+var server = "";
 
 var projectObjects = require("../schemas/project");
 var User = require("../schemas/user");

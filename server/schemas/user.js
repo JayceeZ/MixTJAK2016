@@ -7,7 +7,7 @@ var User = new mongoose.Schema({
   projects : [{ type: mongoose.Schema.ObjectId, ref:"Project", childPath:"user" }],
   updated_at: { type: Date },
   created_at: { type: Date },
-  ztestvar: { type: String, default: "mytestaud"}
+  sessionID: { type: String, default: "none"}
 });
 
 User.plugin(passportLocalMongoose);

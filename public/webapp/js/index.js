@@ -347,6 +347,7 @@ $("#newproject").click(function() {
 		console.log(JSON.parse(localStorage["Project"]));
 	} else {
 		writingInfo("Quitter le mode de lecture des projets pour ajouter un nouveau projet !");
+
 	}
 });
 

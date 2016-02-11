@@ -114,6 +114,7 @@ function removeProjectForServer(idProject) {
  		method: "DELETE",
  		url: ADDR_SERVER+"/project/"+idProject,
  		async: false,
+		data:{sessionID:user.sessionID},
  		dataType: "json",
  		success: function(data) {
  		}
@@ -130,7 +131,7 @@ function createProjectForServer() {
  		method: "POST",
  		url: ADDR_SERVER+"/project/save",
  		async: false,
- 		data: { userId:project.user,tracks:project.track,filters:project.filter,regions:project.region},
+ 		data: { userId:project.user,tracks:project.track,filters:project.filter,regions:project.region, sessionID:user.sessionID},
  		dataType: "json",
  		success: function(data) {
  			project.setName(data);
@@ -149,7 +150,7 @@ function saveProjectForServer() {
 	 		method: "POST",
 	 		url: ADDR_SERVER+"/project/"+project.name,
 	 		async: false,
-	 		data: { userId:project.user,tracks:project.track,filters:project.filter,regions:project.region},
+	 		data: { userId:project.user,tracks:project.track,filters:project.filter,regions:project.region, sessionID:user.sessionID},
 	 		dataType: "json",
 	 		success: function(data) {
 	 		}
@@ -177,7 +178,7 @@ function registerUserForServer(name,pass) {
  		success: function(data) {
  			id = data['id'];
  			right = data['right'];
- 			user.setUser(id,right,name,[]);
+ 			user.setUser(id,right,name,[],data["sessionID"]);
  			writeCookie("sessionID", id, 3);
  		},
  		statusCode: {
@@ -208,6 +209,7 @@ function getUserFromServerViaId(id) {
 
 function getUserFromServer(name,pass) {
 	var id;
+	console.log(user.sessionID);
 	$.ajax({
  		method: "POST",
  		url: ADDR_SERVER+"/login",
@@ -215,9 +217,10 @@ function getUserFromServer(name,pass) {
  		data: { username: name, password: pass},
  		dataType: "json",
  		success: function(data) {
- 			user.setUser(data['id'],data['rights'],name,data['projects']);
+ 			user.setUser(data['id'],data['rights'],name,data['projects'],data["sessionID"]);
  			writeCookie("sessionID", data['id'], 3);
- 		}
+
+		}
 	});
 }
 

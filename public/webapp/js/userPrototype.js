@@ -8,7 +8,8 @@ function userPrototype(id,right,name) {
 	this.right = right;
 	this.name = name;
 	this.project = [];
-	
+	this.sessionID="none";
+
 	this.addProject = function(newIdProject) {
 		console.log(newIdProject);
 		this.project.push(newIdProject);
@@ -17,11 +18,12 @@ function userPrototype(id,right,name) {
 	/**
 	 * Permet de creer l'utilisateur
 	 */
-	this.setUser = function(id,right,name,project) {
+	this.setUser = function(id,right,name,project,sessionID) {
 		this.id = id;
 		this.right = right;
 		this.name = name;		
 		this.project = project.slice();
+		this.sessionID=sessionID;
 	}
 	
 	/**
