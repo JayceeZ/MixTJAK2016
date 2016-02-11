@@ -1,0 +1,105 @@
+@CHARSET "ISO-8859-1";
+
+/*==================================================================================================================
+UTILS
+==================================================================================================================*/
+
+html,body {
+	background: #e5e9e9;
+	height: 100%;
+	margin: 0;
+	padding: 0;
+	overflow-x: hidden;
+	font-family: "Open Sans",Helvetica,Arial,sans-serif;
+	font-feature-settings: "kern";
+	text-align: justify; 
+	text-justify: inter-word;
+	font-size: 10px;	
+}
+
+.max-height {
+	height: 100%;
+}
+
+.max-width {
+	width: 100%;
+}
+
+input[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 12px;
+  width: 50px;
+  border-radius: 1px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+input[type=range]::-moz-range-track {
+  width: 50px;
+  height: 100%;
+  background: #dddddd url("../imgs/triangle.png") no-repeat scroll center top;
+}
+
+.input-width[type=range]::-moz-range-thumb {
+  box-shadow: 0px 0px 1px #000000, 0px 0px 1px #0d0d0d;
+  border: 1px solid #000000;
+  height: 12px;
+  width: 50px;
+  border-radius: 1px;
+  background: #ffffff;
+  cursor: pointer;
+}
+
+.input-width[type=range]::-moz-range-track {
+  width: 100%;
+  height: 2px;
+  background: #FFFFFF;
+}
+
+.border-filter {
+	background: #dddddd;
+	border-right: 1px solid #000000;
+	border-left: 1px solid #000000;
+	border-top: 5px double #000000;
+	border-bottom: 5px double #000000;
+}
+
+.border-filter-info {
+	background:#dddddd;
+	border: 1px double #000000;
+}
+
+.pots {
+	border-radius: 15px;
+	cursor: grab;
+	height: 20px;
+	width: 20px;
+	border: 1px solid #111;
+	transition: all 0.15s ease-out 0s;
+	background: #222 url("../imgs/index.png") no-repeat scroll 50% 50%;
+	transform: rotate3d(0, 0, 1, 0deg);
+}
+
+/*==================================================================================================================
+HEADER
+==================================================================================================================*/
+
+.header-top {
+	background: #FFF;
+	height: 75px;
+	line-height: 75px;
+	border-bottom: 1px solid #dddddd;
+}
+
+/*==================================================================================================================
+CUSTOM BOOTSTRAP
+==================================================================================================================*/
+
+.form-group {
+	margin-bottom: 0px;
+}
+
+label {
+	margin-bottom: 0px;
+}

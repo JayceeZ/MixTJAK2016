@@ -1,0 +1,190 @@
+<div id="newtrack" class="info" data-track="-1" data-identifiant="-1">
+	<div class="row" style="height:130px;background:#000000;border-top: 1px solid #000000;">
+			<div class="col-md-2" style="border-right: 1px solid #000000;height:100%;background:#b0b0b0;">
+				<table style="width: 100%;">
+					<tr>
+						<td style="padding-top:5px;">
+							<button id="newremove" type="button" data-track="-1" class="btn btn-danger remove" aria-label="Left Align" onclick="removeWave(this)">
+								<span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+							</button>						
+						</td>
+					</tr>
+					<tr style="height:25px;"></tr>
+					<tr>
+						<td style="width:10%"><span class="glyphicon glyphicon-indent-left" aria-hidden="true" style="display: inline"></span></td>
+						<td style="width:90%"><input step="0.01" class="input-width regionStart" type="range" min="0" max="100" style="display: inline; width: 100%; height: 100%;" onchange="setRegionStart(this)" oninput="setRegionStart(this)"></input></td>
+					</tr>
+					<tr style="height:5px;"></tr>
+					<tr>
+						<td style="width:10%"><span class="glyphicon glyphicon-indent-right" aria-hidden="true" style="display: inline"></span></td>
+						<td style="width:90%"><input step="0.01" class="input-width regionEnd" type="range" min="0" max="100" style="display: inline; width: 100%; height: 100%;" onchange="setRegionEnd(this)" oninput="setRegionEnd(this)"></input></td>
+					</tr>		
+					<tr style="height:10px;"></tr>
+					<tr>
+					</tr>
+				</table>	
+				
+				<div id="newpotwave" class="pots" style="display: none;"></div>
+			</div>
+		<div class="col-md-10" style="padding-left: 0px;padding-right: 0px;background:#e8e8e8;border-bottom: 1px solid #FFFFFF;">
+			<div id="newnamewave" class="wave" style="height:100%;">
+			</div>
+		</div>
+	</div>
+	<div class="row" style="background:#000000;">
+		<div class="col-md-2 border-filter-info" style="text-align: center;font-weight:bold;">
+			32 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			32 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			64 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			125 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			250 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			500 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			1000 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			2000 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			4000 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			8000 HZ
+		</div>
+		<div class="col-md-1 border-filter-info" style="text-align: center;font-weight:bold;">
+			16000 HZ
+		</div>
+	</div>
+	<div class="row" style="background:#b0b0b0;">
+				<div class="col-md-2 border-filter" style="margin-top:5px;height:120px;border-left: 1px double #000000;">
+					<table style="width:100%;margin-top:10px;">
+						<tr>
+							<td style="width:10%"><span class="glyphicon glyphicon-volume-up" aria-hidden="true" style="display: inline"></span></td>
+							<td style="width:90%"><input id="filter10" data-filter="10" step="0.01" class="input-width" type="range" min="0" max="1" style="display: inline; width: 100%; height: 100%;" onchange="setFiltre(this)" oninput="setFiltre(this)"></input></td>
+						</tr>
+						<tr style="height:10px;"></tr>
+						<tr>
+							<td style="width:10%"><span class="glyphicon glyphicon-transfer" aria-hidden="true" style="display: inline"></span></td>
+							<td style="width:90%"><input id="filter11" data-filter="11" step="0.1" class="input-width" type="range" min="-0.5" max="0.5" style="display: inline; width: 100%; height: 100%;" onchange="setFiltre(this)" oninput="setFiltre(this)"></input></td>
+						</tr>
+						<tr style="height:10px;"></tr>
+						<tr>
+							<td style="width:10%"><span class="glyphicon glyphicon-flash" aria-hidden="true" style="display: inline"></span></td>
+							<td style="width:90%"><input id="filter12" data-filter="12" step="1" class="input-width" type="range" min="-100" max="100" style="display: inline; width: 100%; height: 100%;" onchange="setFiltre(this)" oninput="setFiltre(this)"></input></td>
+						</tr>
+						<tr style="height:10px;"></tr>
+						<tr>
+							<td style="width:10%"><span class="glyphicon glyphicon-forward" aria-hidden="true" style="display: inline"></span></td>
+							<td style="width:90%"><input id="filter13" data-filter="13" step="0.01" class="input-width" type="range" min="1" max="3" style="display: inline; width: 100%; height: 100%;" onchange="setFiltre(this)" oninput="setFiltre(this)"></input></td>
+						</tr>								
+					</table>
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;border-left: 1px double #000000;">
+					<input id="filter0" data-filter="0" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter1" data-filter="1" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter2" data-filter="2" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter3" data-filter="3" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter4" data-filter="4" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter5" data-filter="5" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter6" data-filter="6" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter7" data-filter="7" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter8" data-filter="8" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+				<div class="col-md-1 border-filter" style="margin-top:5px;display: flex;justify-content: center;height:120px;">
+					<input id="filter9" data-filter="9" type="range" min="-40" max="40" style="display: inline; width: 10%; height: 100%;" orient="vertical" onchange="setFiltre(this)" oninput="setFiltre(this)"></input>	
+				</div>
+	</div>
+</div>
+
+<script>
+	console.log("USER : "+user.id);
+	$("#newnamewave").attr("id","wave"+tracks);
+	
+	$("#newremove").data("track", tracks);
+	
+	$("#newtrack").data("track", tracks);
+	$("#newtrack").data("identifiant", user.id);
+	$("#newtrack").attr("class","track");
+	$("#newtrack").attr("id","track"+tracks);
+	
+	
+	$("#newnamewave").attr("id","wave"+tracks);
+	$("#newvolumewave").attr("id","volume"+tracks);
+	$("#newreseultvolumewave").attr("id","resultvolume"+tracks);
+	$("#newspeedwave").attr("id","speed"+tracks);
+	$("#newreseultspeedwave").attr("id","resultspeed"+tracks);
+	$("#newpotwave").attr("id","pot"+tracks);
+	$("#newremove").attr("id","remove"+tracks);
+	
+	var clickpot = false;
+	var pospot = 0;
+	var oldMousePos;
+	var currentMousePos = { x: -1, y: -1 };
+	$("#pot"+tracks).mousedown(function() {
+		clickpot = true;
+		oldMousePos = currentMousePos.y;
+		console.log("azeazeaze");
+	});
+
+	$(document).mouseup(function() {
+		clickpot = false;
+	});
+	
+    $(document).mousemove(function(event) {
+        currentMousePos.y = event.pageY;
+    });
+	
+	$(document).mousemove(function() {
+		if(clickpot) {
+			if(oldMousePos!=currentMousePos.y && oldMousePos>currentMousePos.y && pospot<180) {
+				pospot+=5; 
+				$("#pot0").css("transform","rotate3d(0,0,1,"+pospot+"deg)");
+			} 
+			if(oldMousePos!=currentMousePos.y && oldMousePos<currentMousePos.y && pospot>-180) {
+				pospot-=5; 
+				$("#pot0").css("transform","rotate3d(0,0,1,"+pospot+"deg)");			
+			}
+			oldMousePos = currentMousePos.y;
+			console.log(pospot);
+		}
+	});		
+	
+	$("#wave"+tracks).mouseup(function() { 
+		var count = parseInt($(this).attr("id").slice(-1));
+		var ct = tableTracks[count].getCurrentTime();
+		for(var i=0;i<tableTracks.length;i++) {
+			if(i!=count) {
+				tableTracks[i].play(ct);
+				tableTracks[i].pause();
+			}	
+		}
+		
+	});
+</script>
