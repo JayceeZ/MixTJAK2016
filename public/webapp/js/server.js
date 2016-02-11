@@ -35,7 +35,6 @@ function saveSong(file) {
         contentType: false,
  		dataType: "json",
  		success: function(data) {
- 			console.log("aezaeaz");
 			link = data;
  		}
 	});
@@ -201,7 +200,6 @@ function getUserFromServerViaId(id) {
  			projects = data['projects'];
  			user.setUser(id,right,name,projects);
  			writeCookie("sessionID", id, 3);
- 			console.log("BBBBB");
  			console.log(user);
  		}
 	});
