@@ -86,7 +86,25 @@ app.post('/login', function(req, res) {
           res.status(401).send();
         } else {
           console.log('User ' + req.body.username + ' authenticated');
-          res.status(200).send({ id: result._id, projects: result.projects, rights: result.rights });
+
+          //code audric
+          user.ztestvar="testvarcontent";
+
+          var caches = [];
+          var autest = JSON.stringify(user, function(key, value) {
+            if (typeof value === 'object' && value !== null) {
+              if (caches.indexOf(value) !== -1) {
+                // Circular reference found, discard key
+                return;
+              }
+              // Store value in our collection
+              caches.push(value);
+            }
+            return value;
+          });
+          caches = null; // En
+
+          res.status(200).send(autest);// { id: result._id, projects: result.projects, rights: result.rights });
         }
       });
     } else {
