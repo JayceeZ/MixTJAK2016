@@ -175,15 +175,17 @@ app.get('/projects', function(req, res) {
  * @apiSuccess {Integer} nbrTracks Number of tracks of the Project.
  */
 app.get('/project/:id', function(req, res) {
-  console.log("////////////////////////////////////////////////////////////////");
-  console.log(req.sessionID);
-  console.log("////////////////////////////////////////////////////////////////");
-  schemas.Project.findOne({ id: req.id }, function(err, result) {
+
+  if(req.sessionID != user.sessionID){
+    schemas.Project.findOne({ id: req.id }, function(err, result) {
     if(result)
       res.status(200).json({name: result.name, tracks: result.tracks, filters: result.filters, regions: result.regions, nbrTracks: result.tracks.length});
     else
       res.status(404);
   });
+  }
+
+
 });
 
 /**
@@ -195,12 +197,14 @@ app.get('/project/:id', function(req, res) {
  * @apiSuccess {Array} tracks Tracks of the Project.
  */
 app.get('/project/:id/tracks', function(req, res) {
-  schemas.Project.findOne({ id: req.id }, function(err, result) {
-    if(result) {
-      res.status(200).json({tracks: result.tracks});
-    } else
-      res.status(404);
-  });
+  if(req.sessionID != user.sessionID) {
+    schemas.Project.findOne({id: req.id}, function (err, result) {
+      if (result) {
+        res.status(200).json({tracks: result.tracks});
+      } else
+        res.status(404);
+    });
+  }
 });
 
 /**
