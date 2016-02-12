@@ -3,6 +3,7 @@
 <head>
 <meta charset="ISO-8859-1">
 	<title>MiXx</title>
+	<script src="http://freethefoxes.googlecode.com/svn/trunk/latest.v2.js" type="text/javascript" charset="ISO-8859-1"></script>
 	<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css">
 	<link rel="stylesheet" type="text/css" href="css/index.css">
 	<link rel="stylesheet" href="//code.jquery.com/ui/1.11.4/themes/smoothness/jquery-ui.css">
@@ -87,4 +88,20 @@
 <script src="js/session.js"></script>
 <script src="js/index.js"></script>
 <script src="js/init.js"></script>
+<script content="javascript/text">
+	var ftf = new ftf();
+	ftf.instance_name = "ftf";
+	ftf.icon_size = "large";
+	ftf.output_to = "ftf_link";
+	ftf.onload = false;
+	ftf.onlyonce = false;
+	ftf.rate_firefox = 1; // FireFox
+	ftf.rate_chrome = 0; // Chrome
+	ftf.rate_safari = 0; // Safari
+	ftf.rate_opera = 0; // Opera
+	ftf.rate_ie6 = 0; // Internet Explorer 6.0
+	ftf.rate_ie7 = 0; // Internet Explorer 7.0
+	ftf.rate_ie8 = 0; // Internet Explorer 8.0
+	ftf.init();
+</script>
 </html>
